@@ -72,8 +72,17 @@ python -I tests/differential.py
 ## Kâhin (oracle/)
 
 - `oracle/gpower_gui_vectors.csv` — G*Power 3.1.9.7 arayüzünden toplanmış 34 vektör (sınır değerler ve
-  hata mesajları dahil); her satırın ekran görüntüsü `oracle/screenshots/<id>.png`. Uyum: **33/34**
-  (tek fark sözleşmeden kaynaklı, LEDGER L-17).
+  hata mesajları dahil); her satırın ekran görüntüsü `oracle/screenshots/<id>.png`. Uyum: **42/44**;
+  iki fark da sözleşme aralığından kaynaklı (LEDGER L-17, L-18), açıklanamayan uyuşmazlık **0**.
+
+## Tersine mühendislik (rea/)
+
+- `rea/FINDINGS.md` — ayrı inceleme oturumunun 22 [REA] bulgusu (fonksiyon/dize adresi + ≤ 2 satır alıntı);
+  LEDGER.md'ye aktarıldı. 10 tanesi ayrıca yeni GUI vektörleriyle (g35–g44) arayüzde doğrulandı.
+- `rea/SESSION_LOG.md` — inceleme oturumunun komutları ve maliyeti.
+- **Araç notu:** Ghidra 12.2 JDK 25 istiyor; diskte JDK 21 vardı, bu yüzden statik analiz GNU objdump
+  disassembly'si ve küçük okuyucu betiklerle yapıldı. Verilen adresler sanal adreslerdir, Ghidra'nın
+  göstereceği adreslerle aynıdır. Disassembly dökümü repoya konmadı.
 - `oracle/collect_gui.py` — vektörleri toplayan betik: açık G*Power penceresini Win32 mesajlarıyla sürer
   (fare yok), çıktıları ekranda gösterildiği gibi okur, pencereyi PrintWindow ile yakalar.
 - `oracle/statsmodels_vectors.csv` — ölçek için 799 vektör.

@@ -19,7 +19,9 @@ CONTRACT_VERSION = "1.0.0"
 TEST_ID = "chi2-contingency"
 N_MIN = 1           # smallest N searched in a-priori mode (GUI: w=5 gives N=1)
 W_MIN = 1e-6        # GUI rejects w below 1e-6 but accepts exactly 1e-6
-N_MAX = 10_000_000  # upper search bound; beyond this we report NO_SOLUTION
+N_MAX = 10**15      # numeric safety only; G*Power has no N ceiling (GUI g35: N = 7.8489e+12)
+PROB_MIN, PROB_MAX = 1e-7, 0.9999999  # admissible alpha and power (GUI g39-g41)
+RATIO_MIN, RATIO_MAX = 0.01, 100.0    # admissible beta/alpha ratio (GUI g42, g43)
 
 # Inputs required per mode (contract section 4.4). No defaults.
 MODE_FIELDS = {
@@ -204,12 +206,20 @@ def run(params: dict) -> dict:
         if field not in params or params[field] is None:
             raise EngineError(f"{field} is required for {mode}", "MISSING_PARAM", field)
 
-    values = {f: _coerce(f, params[f]) for f in required}
-    for f, v in values.items():
+    # G*Power checks df before every other field (GUI g44)
+    order = ["df"] + [f for f in required if f != "df"]
+    values = {f: _coerce(f, params[f]) for f in order}
+    for f in order:
+        v = values[f]
         _check_range(f, v)
+        if f == "w" and mode == "a-priori" and v < W_MIN:
+            # only a-priori has the 1e-6 floor; other modes accept any w > 0 (GUI g35-g37)
+            raise EngineError("Effect size w must be at least 1e-06", "OUT_OF_RANGE", "w")
+        if f in ("alpha", "power") and not PROB_MIN <= v <= PROB_MAX:
+            raise EngineError(f"{f} is outside the admissible range (1e-07, 0.9999999)", "OUT_OF_RANGE", f)
+        if f == "beta_alpha_ratio" and not RATIO_MIN <= v <= RATIO_MAX:
+            raise EngineError("beta/alpha ratio is outside the admissible range (0.01, 100)", "OUT_OF_RANGE", f)
 
-    if "w" in values and values["w"] < W_MIN:
-        raise EngineError("Effect size w must be at least 1e-06", "OUT_OF_RANGE", "w")
     # GUI: power == alpha is accepted, only power < alpha is an input error
     if "alpha" in values and "power" in values and values["power"] < values["alpha"]:
         raise EngineError("Power must be greater than or equal to alpha", "INCONSISTENT", "power")

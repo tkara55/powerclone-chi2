@@ -33,3 +33,13 @@ g31,chi2-contingency,sensitivity,,0.05,0.80,1,50,,,,7.8488605,3.8414588,,,,,0.39
 g32,chi2-contingency,post-hoc,0.000001,0.05,,1,100,,w exactly 1e-6,,1e-10,3.8414588,,0.0500000,,,,,,screenshots/g32.png
 g33,chi2-contingency,post-hoc,0.0000011,0.05,,1,100,,w just above 1e-6,,1.21e-10,3.8414588,,0.0500000,,,,,,screenshots/g33.png
 g34,chi2-contingency,a-priori,0.5,0.05,0.051,1,,,N=1 reachable?,1,0.2500000,3.8414588,0.0790975,,,,,,,screenshots/g34.png
+g35,chi2-contingency,a-priori,0.000001,0.05,0.8,1,,,R-02: a-priori w = 1e-6 accepted?,7.8489e+12,7.8488605,3.8414588,0.8000000,,,,,,,screenshots/g35.png
+g36,chi2-contingency,a-priori,0.000000999,0.05,0.8,1,,,R-02: a-priori w < 1e-6 rejected,,,,,,,,,,Effect size w must be greater 1e-06.,screenshots/g36.png
+g37,chi2-contingency,post-hoc,0.0000005,0.05,,1,100,,R-03: post-hoc w < 1e-6 accepted,,2.5e-11,3.8414588,,0.0500000,,,,,,screenshots/g37.png
+g38,chi2-contingency,post-hoc,0,0.05,,1,100,,R-03: post-hoc w = 0 accepted,,0,3.8414588,,0.0500000,,,,,,screenshots/g38.png
+g39,chi2-contingency,post-hoc,0.3,0.00000001,,1,100,,R-06: alpha < 1e-7 rejected,,,,,,,,,,"Alpha is outside the admissible range (1e-07, 1).",screenshots/g39.png
+g40,chi2-contingency,post-hoc,0.3,0.0000001,,1,100,,R-06: alpha = 1e-7 accepted,,9.0000000,28.3739874,,0.009989983,,,,,,screenshots/g40.png
+g41,chi2-contingency,a-priori,0.3,0.05,0.99999995,1,,,R-07: power > 0.9999999 rejected,,,,,,,,,,"Power is outside the admissible range (1e-07, 1).",screenshots/g41.png
+g42,chi2-contingency,compromise,0.3,,,5,100,0.005,R-09: q < 0.01 rejected,,,,,,,,,,"β/α ratio is outside the admissible range (0.01, 100)",screenshots/g42.png
+g43,chi2-contingency,compromise,0.3,,,5,100,100,R-09: q = 100 accepted,,9.0000000,16.0674195,,0.3345799,0.006654201,0.6654201,,,,screenshots/g43.png
+g44,chi2-contingency,a-priori,0,0.05,0.8,0,,,R-10: df checked before w,,,,,,,,,,Degrees of Freedom must be greater or equal one.,screenshots/g44.png

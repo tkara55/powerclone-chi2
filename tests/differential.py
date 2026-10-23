@@ -26,6 +26,8 @@ from powerclone import engine
 
 ROOT = Path(__file__).resolve().parent.parent
 INT_FIELDS = {"n_total", "df"}
+# G*Power accepts these inputs, but CONTRACT.md section 5 requires n_total >= 2 and w > 0 (LEDGER L-17, L-18)
+CONTRACT_DIVERGENCE = {"g25": "n_total = 1", "g38": "w = 0"}
 
 
 def close(a: float, b: float, tol: float = 1e-6) -> bool:
@@ -92,6 +94,9 @@ def run_gui():
                     ok &= "error" in got
                 elif field == "code":
                     ok &= got.get("code") == exp
+                elif field in INT_FIELDS and "e" in exp.lower():
+                    # G*Power prints huge N in short scientific form (e.g. 7.8489e+12)
+                    ok &= field in got and abs(got[field] - float(exp)) <= 5e-5 * float(exp)
                 elif field in INT_FIELDS:
                     ok &= got.get(field) == int(exp)
                 else:
@@ -119,8 +124,12 @@ def main():
     lines += ["## Oracle 2: G*Power 3.1.9.7 GUI (oracle/gpower_gui_vectors.csv)", ""]
     if gui:
         ok = sum(r[1] for r in gui)
+        other = [r[0] for r in gui if not r[1] and r[0] not in CONTRACT_DIVERGENCE]
         lines += [f"- Vectors with recorded G*Power values: **{len(gui)}**",
-                  f"- Full match: **{ok}/{len(gui)}** ({100 * ok / len(gui):.1f}%)", "",
+                  f"- Full match: **{ok}/{len(gui)}** ({100 * ok / len(gui):.1f}%)",
+                  "- Deliberate differences (contract range wins over G*Power): "
+                  + ", ".join(f"{k} ({v})" for k, v in CONTRACT_DIVERGENCE.items()),
+                  f"- Unexplained mismatches: **{len(other)}** {other if other else ''}", "",
                   "| id | match | expected | got |", "|---|---|---|---|"]
         lines += [f"| {i} | {'yes' if m else '**NO**'} | `{e}` | `{g}` |" for i, m, e, g in gui]
     else:

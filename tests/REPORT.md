@@ -14,8 +14,10 @@ integer N with power >= target, i.e. ceil(). See LEDGER.md for the rounding rule
 
 ## Oracle 2: G*Power 3.1.9.7 GUI (oracle/gpower_gui_vectors.csv)
 
-- Vectors with recorded G*Power values: **34**
-- Full match: **33/34** (97.1%)
+- Vectors with recorded G*Power values: **44**
+- Full match: **42/44** (95.5%)
+- Deliberate differences (contract range wins over G*Power): g25 (n_total = 1), g38 (w = 0)
+- Unexplained mismatches: **0** 
 
 | id | match | expected | got |
 |---|---|---|---|
@@ -53,3 +55,13 @@ integer N with power >= target, i.e. ceil(). See LEDGER.md for the rounding rule
 | g32 | yes | `{'ncp': '1e-10', 'critical_chi2': '3.8414588', 'power': '0.0500000'}` | `{'ncp': 1e-10, 'critical_chi2': 3.8414588206941285, 'power': 0.050000000011454944}` |
 | g33 | yes | `{'ncp': '1.21e-10', 'critical_chi2': '3.8414588', 'power': '0.0500000'}` | `{'ncp': 1.2100000000000002e-10, 'critical_chi2': 3.8414588206941285, 'power': 0.0500000000138605}` |
 | g34 | yes | `{'n_total': '1', 'ncp': '0.2500000', 'critical_chi2': '3.8414588', 'actual_power': '0.0790975'}` | `{'ncp': 0.25, 'critical_chi2': 3.8414588206941285, 'n_total': 1, 'actual_power': 0.07909753416059635}` |
+| g35 | yes | `{'n_total': '7.8489e+12', 'ncp': '7.8488605', 'critical_chi2': '3.8414588', 'actual_power': '0.8000000'}` | `{'ncp': 7.848860509326999, 'critical_chi2': 3.8414588206941285, 'n_total': 7848860509327, 'actual_power': 0.8000000000000398}` |
+| g36 | yes | `{'error_text': 'Effect size w must be greater 1e-06.'}` | `{'error': 'Effect size w must be at least 1e-06', 'code': 'OUT_OF_RANGE', 'field': 'w'}` |
+| g37 | yes | `{'ncp': '2.5e-11', 'critical_chi2': '3.8414588', 'power': '0.0500000'}` | `{'ncp': 2.5e-11, 'critical_chi2': 3.8414588206941285, 'power': 0.05000000000286367}` |
+| g38 | **NO** | `{'ncp': '0', 'critical_chi2': '3.8414588', 'power': '0.0500000'}` | `{'error': 'w out of range: 0.0', 'code': 'OUT_OF_RANGE', 'field': 'w'}` |
+| g39 | yes | `{'error_text': 'Alpha is outside the admissible range (1e-07, 1).'}` | `{'error': 'alpha is outside the admissible range (1e-07, 0.9999999)', 'code': 'OUT_OF_RANGE', 'field': 'alpha'}` |
+| g40 | yes | `{'ncp': '9.0000000', 'critical_chi2': '28.3739874', 'power': '0.009989983'}` | `{'ncp': 9.0, 'critical_chi2': 28.373987361779154, 'power': 0.009989982847600994}` |
+| g41 | yes | `{'error_text': 'Power is outside the admissible range (1e-07, 1).'}` | `{'error': 'power is outside the admissible range (1e-07, 0.9999999)', 'code': 'OUT_OF_RANGE', 'field': 'power'}` |
+| g42 | yes | `{'error_text': 'β/α ratio is outside the admissible range (0.01, 100)'}` | `{'error': 'beta/alpha ratio is outside the admissible range (0.01, 100)', 'code': 'OUT_OF_RANGE', 'field': 'beta_alpha_ratio'}` |
+| g43 | yes | `{'ncp': '9.0000000', 'critical_chi2': '16.0674195', 'power': '0.3345799', 'alpha': '0.006654201', 'beta': '0.6654201'}` | `{'ncp': 9.0, 'critical_chi2': 16.06741954078189, 'alpha': 0.006654201060141824, 'beta': 0.6654201060141834, 'power': 0.33457989398581656}` |
+| g44 | yes | `{'error_text': 'Degrees of Freedom must be greater or equal one.'}` | `{'error': 'df out of range: 0', 'code': 'OUT_OF_RANGE', 'field': 'df'}` |

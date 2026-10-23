@@ -81,6 +81,25 @@ Feature: chi2-contingency güç analizi
     When w 0.000001 verilir
     Then hesap yapılır (GUI g32)
 
+  Scenario Outline: G*Power kabul aralıkları (REA R-02…R-10, GUI g35–g44)
+    When <girdi> verilir
+    Then sonuç <sonuç> olur
+    Examples:
+      | girdi                                   | sonuç                         |
+      | a-priori w 0.000001                     | hesaplanır (N ≈ 7.85e12)      |
+      | a-priori w 0.000000999                  | OUT_OF_RANGE, field w         |
+      | post-hoc w 0.0000005                    | hesaplanır (w ≥ 1e-6 yalnızca a-priori'de) |
+      | alpha 0.00000001                        | OUT_OF_RANGE, field alpha     |
+      | alpha 0.0000001                         | hesaplanır ([1e-7, 0.9999999]) |
+      | power 0.99999995                        | OUT_OF_RANGE, field power     |
+      | beta_alpha_ratio 0.005                  | OUT_OF_RANGE ([0.01, 100])    |
+      | beta_alpha_ratio 100                    | hesaplanır                    |
+      | df 0 ve w 0 birlikte                    | field df (df her zaman önce)  |
+
+  Scenario: Tavan yok
+    Given çok küçük w (1e-6)
+    Then a-priori N bir üst sınıra takılmadan bulunur (R-12, R-21)
+
   Scenario Outline: Geçersiz girdi
     When <girdi> verilir
     Then code <kod>, field <alan> döner ve çıkış kodu 2 olur
@@ -95,8 +114,8 @@ Feature: chi2-contingency güç analizi
       | --n_total 1 (post-hoc)                 | OUT_OF_RANGE  | n_total |
       | --test t2-indep                        | UNSUPPORTED   | test    |
 
-  Scenario: Arama sınırı
-    Given gerekli N 10 000 000'u aşıyor
+  Scenario: Arama sınırı (yalnızca sayısal güvenlik)
+    Given gerekli N 1e15'i aşıyor
     Then {"code":"NO_SOLUTION"} döner ve çıkış kodu 1 olur
 
   Scenario: Determinizm
@@ -110,6 +129,6 @@ Bunlar şu an [AJAN] varsayımıdır; [REA] veya GUI vektörüyle kapatılmalı:
 
 1. ~~a-priori alt sınırı~~ → GUI ile kapandı: N = 1 (L-11)
 2. ~~güç ≤ α~~ → GUI ile kapandı: güç = α kabul, güç < α hata (L-13)
-3. Aramanın üst sınırı ve durma koşulu — L-14 ([REA] bekliyor)
+3. ~~Aramanın üst sınırı ve durma koşulu~~ → [REA] ile kapandı: tavan yok, Brent maks 300 iterasyon (R-11, R-12, R-16, R-21)
 4. ~~Hata metinleri~~ → GUI ile kapandı (L-15, L-16g)
 5. Bilinçli fark: post-hoc N = 1'i G*Power kabul ediyor, sözleşme gereği biz reddediyoruz (L-17)

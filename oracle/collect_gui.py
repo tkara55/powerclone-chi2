@@ -203,6 +203,7 @@ def run_row(root, pid, row, shot_dir):
 
 
 def main():
+    sys.stdout.reconfigure(encoding="utf-8")  # error texts contain β, α
     csv_path = Path(sys.argv[1])
     shot_dir = csv_path.parent / "screenshots"
     shot_dir.mkdir(exist_ok=True)
