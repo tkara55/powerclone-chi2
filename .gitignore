@@ -1,0 +1,9 @@
+GPower.exe
+*.exe
+ghidra_projects/
+*.gpr
+*.rep/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.env
