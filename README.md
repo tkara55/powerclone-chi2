@@ -23,7 +23,7 @@ Tests for correlation and regression analyses. *Behavior Research Methods, 41*, 
 | GPowerWin_3.1.9.7.zip SHA-256 | `3BB7F1F2478D74EE5BA701AE7F849373CF2B8A11F6B6216C7C6B236DB7861199` |
 | Sözleşme | CONTRACT.md 1.0.0 |
 | Motor | Python ≥ 3.10, SciPy |
-| Demo videosu | `<doldurulacak: 60 sn CLI videosu linki>` |
+| Demo videosu | [demo/demo.mp4](demo/demo.mp4) (52 sn; `demo/demo.ps1` komutları canlı çalıştırır, ffmpeg ile kaydedildi) |
 
 ## Kurulum ve çalıştırma
 
