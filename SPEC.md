@@ -51,7 +51,8 @@ Feature: chi2-contingency güç analizi
       | w     | p    | df | sonuç                              |
       | 0.3   | 0.80 | 1  | n_total 88                         |
       | 0.01  | 0.95 | 1  | n_total 129948                     |
-      | 5     | 0.95 | 1  | n_total = alt sınır (L-11, [REA] ile doğrulanacak) |
+      | 5     | 0.95 | 1  | n_total 1 (GUI g08)                |
+      | 0.3   | 0.05 | 5  | n_total 1 (güç = α kabul, GUI g09) |
 
   Scenario: Post hoc — kılavuz örneği
     When mode "post-hoc", w 0.3, alpha 0.05, n_total 100, df 5 verilir
@@ -70,9 +71,15 @@ Feature: chi2-contingency güç analizi
     When mode "sensitivity", alpha 0.05, power 0.95, n_total 100, df 5 verilir
     Then ncp 19.7801344 ve w 0.4447486 olur
 
-  Scenario: Güç α'dan büyük değil
-    When mode "a-priori", w 0.3, alpha 0.05, power 0.05, df 5 verilir
+  Scenario: Güç α'dan küçük
+    When mode "a-priori", w 0.3, alpha 0.05, power 0.04, df 5 verilir
     Then {"code":"INCONSISTENT","field":"power"} döner ve çıkış kodu 2 olur
+
+  Scenario: w alt sınırı
+    When w 0.0000009 verilir
+    Then {"code":"OUT_OF_RANGE","field":"w"} döner
+    When w 0.000001 verilir
+    Then hesap yapılır (GUI g32)
 
   Scenario Outline: Geçersiz girdi
     When <girdi> verilir
@@ -101,7 +108,8 @@ Feature: chi2-contingency güç analizi
 
 Bunlar şu an [AJAN] varsayımıdır; [REA] veya GUI vektörüyle kapatılmalı:
 
-1. a-priori aramanın alt sınırı (N = 2 mi, başka mı?) — L-11
-2. güç ≤ α olduğunda G*Power ne yapıyor (hata mesajı mı, N alt sınırı mı?) — L-13
-3. Aramanın üst sınırı ve durma koşulu — L-14
-4. Kılavuzdaki hata metinleri — L-15
+1. ~~a-priori alt sınırı~~ → GUI ile kapandı: N = 1 (L-11)
+2. ~~güç ≤ α~~ → GUI ile kapandı: güç = α kabul, güç < α hata (L-13)
+3. Aramanın üst sınırı ve durma koşulu — L-14 ([REA] bekliyor)
+4. ~~Hata metinleri~~ → GUI ile kapandı (L-15, L-16g)
+5. Bilinçli fark: post-hoc N = 1'i G*Power kabul ediyor, sözleşme gereği biz reddediyoruz (L-17)

@@ -88,7 +88,9 @@ def run_gui():
                 got = err.to_dict()
             ok = True
             for field, exp in expected.items():
-                if field == "code":
+                if field == "error_text":
+                    ok &= "error" in got
+                elif field == "code":
                     ok &= got.get("code") == exp
                 elif field in INT_FIELDS:
                     ok &= got.get(field) == int(exp)

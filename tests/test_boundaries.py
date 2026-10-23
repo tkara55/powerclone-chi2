@@ -22,8 +22,9 @@ BASE = ["--test", "chi2-contingency", "--mode", "a-priori"]
     (BASE + ["--w", "-0.3", "--alpha", "0.05", "--power", "0.95", "--df", "5"], "OUT_OF_RANGE", "w"),
     (BASE + ["--w", "0.3", "--alpha", "1", "--power", "0.95", "--df", "5"], "OUT_OF_RANGE", "alpha"),
     (BASE + ["--w", "0.3", "--alpha", "0.05", "--power", "0.95", "--df", "0"], "OUT_OF_RANGE", "df"),
-    (BASE + ["--w", "0.3", "--alpha", "0.05", "--power", "0.05", "--df", "5"], "INCONSISTENT", "power"),
+    (BASE + ["--w", "0.3", "--alpha", "0.05", "--power", "0.04", "--df", "5"], "INCONSISTENT", "power"),
     (BASE + ["--w", "0.3", "--alpha", "0.05", "--power", "0.01", "--df", "5"], "INCONSISTENT", "power"),
+    (BASE + ["--w", "0.0000009", "--alpha", "0.05", "--power", "0.8", "--df", "1"], "OUT_OF_RANGE", "w"),
     (["--test", "t2-indep", "--mode", "a-priori"], "UNSUPPORTED", "test"),
     (["--test", "chi2-contingency", "--mode", "magic"], "UNSUPPORTED", "mode"),
     (["--test", "chi2-contingency", "--mode", "post-hoc", "--w", "0.3", "--alpha", "0.05", "--n_total", "1", "--df", "1"], "OUT_OF_RANGE", "n_total"),
@@ -41,8 +42,22 @@ def test_tiny_effect_is_large_but_finite():
 
 
 def test_huge_effect_hits_minimum_n():
-    payload, code = run(BASE + ["--w", "5", "--alpha", "0.05", "--power", "0.8", "--df", "1"])
-    assert code == 0 and payload["n_total"] == engine.N_MIN
+    # G*Power GUI vector g08: w=5 -> N=1
+    payload, code = run(BASE + ["--w", "5", "--alpha", "0.05", "--power", "0.95", "--df", "1"])
+    assert code == 0 and payload["n_total"] == 1
+
+
+def test_power_equal_alpha_is_accepted():
+    # G*Power GUI vector g09: power == alpha -> N=1, no error
+    payload, code = run(BASE + ["--w", "0.3", "--alpha", "0.05", "--power", "0.05", "--df", "5"])
+    assert code == 0 and payload["n_total"] == 1
+
+
+def test_w_exactly_1e6_is_accepted():
+    # G*Power GUI vector g32
+    payload, code = run(["--test", "chi2-contingency", "--mode", "post-hoc", "--w", "0.000001",
+                         "--alpha", "0.05", "--n_total", "100", "--df", "1"])
+    assert code == 0
 
 
 def test_a_priori_n_is_minimal():

@@ -19,7 +19,8 @@ Tests for correlation and regression analyses. *Behavior Research Methods, 41*, 
 | | |
 |---|---|
 | Referans | G*Power 3.1.9.7 (Windows), psychologie.hhu.de |
-| GPower.exe SHA-256 | `<doldurulacak: Get-FileHash GPower.exe -Algorithm SHA256>` |
+| GPowerNT.exe SHA-256 | `C63E6A133EB6372932F810C08CC33DC35A06D1DDB658F897BD6C34A754EFC812` |
+| GPowerWin_3.1.9.7.zip SHA-256 | `3BB7F1F2478D74EE5BA701AE7F849373CF2B8A11F6B6216C7C6B236DB7861199` |
 | Sözleşme | CONTRACT.md 1.0.0 |
 | Motor | Python ≥ 3.10, SciPy |
 | Demo videosu | `<doldurulacak: 60 sn CLI videosu linki>` |
@@ -70,8 +71,11 @@ python -I tests/differential.py
 
 ## Kâhin (oracle/)
 
-- `oracle/gpower_gui_vectors.csv` — 31 GUI vektörü (sınır değerler dahil). `exp_*` sütunları G*Power
-  ekranından okunup doldurulmalı; her satırın ekran görüntüsü `oracle/screenshots/<id>.png`.
+- `oracle/gpower_gui_vectors.csv` — G*Power 3.1.9.7 arayüzünden toplanmış 34 vektör (sınır değerler ve
+  hata mesajları dahil); her satırın ekran görüntüsü `oracle/screenshots/<id>.png`. Uyum: **33/34**
+  (tek fark sözleşmeden kaynaklı, LEDGER L-17).
+- `oracle/collect_gui.py` — vektörleri toplayan betik: açık G*Power penceresini Win32 mesajlarıyla sürer
+  (fare yok), çıktıları ekranda gösterildiği gibi okur, pencereyi PrintWindow ile yakalar.
 - `oracle/statsmodels_vectors.csv` — ölçek için 799 vektör.
 
 ## MCP sunucusu

@@ -17,7 +17,8 @@ from scipy import optimize, stats
 
 CONTRACT_VERSION = "1.0.0"
 TEST_ID = "chi2-contingency"
-N_MIN = 2           # smallest N searched in a-priori mode (contract range n_total >= 2)
+N_MIN = 1           # smallest N searched in a-priori mode (GUI: w=5 gives N=1)
+W_MIN = 1e-6        # GUI rejects w below 1e-6 but accepts exactly 1e-6
 N_MAX = 10_000_000  # upper search bound; beyond this we report NO_SOLUTION
 
 # Inputs required per mode (contract section 4.4). No defaults.
@@ -207,8 +208,11 @@ def run(params: dict) -> dict:
     for f, v in values.items():
         _check_range(f, v)
 
-    if "alpha" in values and "power" in values and values["power"] <= values["alpha"]:
-        raise EngineError("power must be greater than alpha", "INCONSISTENT", "power")
+    if "w" in values and values["w"] < W_MIN:
+        raise EngineError("Effect size w must be at least 1e-06", "OUT_OF_RANGE", "w")
+    # GUI: power == alpha is accepted, only power < alpha is an input error
+    if "alpha" in values and "power" in values and values["power"] < values["alpha"]:
+        raise EngineError("Power must be greater than or equal to alpha", "INCONSISTENT", "power")
 
     try:
         return SOLVERS[mode](**values)

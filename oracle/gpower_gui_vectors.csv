@@ -1,32 +1,35 @@
-id,test,mode,w,alpha,power,df,n_total,beta_alpha_ratio,note,exp_n_total,exp_ncp,exp_critical_chi2,exp_actual_power,exp_power,exp_alpha,exp_beta,exp_w,exp_code,screenshot
-g01,chi2-contingency,a-priori,0.3,0.05,0.95,5,,,manual example,,,,,,,,,,
-g02,chi2-contingency,a-priori,0.3,0.05,0.80,1,,,2x2 classic,,,,,,,,,,
-g03,chi2-contingency,a-priori,0.1,0.05,0.80,1,,,small w,,,,,,,,,,
-g04,chi2-contingency,a-priori,0.5,0.05,0.80,1,,,large w,,,,,,,,,,
-g05,chi2-contingency,a-priori,0.01,0.05,0.95,1,,,very small w,,,,,,,,,,
-g06,chi2-contingency,a-priori,0.001,0.05,0.80,1,,,extreme small w (search limit?),,,,,,,,,,
-g07,chi2-contingency,a-priori,2,0.05,0.80,1,,,very large w (minimum N?),,,,,,,,,,
-g08,chi2-contingency,a-priori,5,0.05,0.95,1,,,huge w (minimum N?),,,,,,,,,,
-g09,chi2-contingency,a-priori,0.3,0.05,0.05,5,,,power == alpha,,,,,,,,,,
-g10,chi2-contingency,a-priori,0.3,0.05,0.04,5,,,power < alpha,,,,,,,,,,
-g11,chi2-contingency,a-priori,0.3,0.05,0.0501,5,,,power just above alpha,,,,,,,,,,
-g12,chi2-contingency,a-priori,0.3,0.01,0.99,10,,,strict,,,,,,,,,,
-g13,chi2-contingency,a-priori,0.3,0.001,0.9,3,,,tiny alpha,,,,,,,,,,
-g14,chi2-contingency,a-priori,0.2,0.10,0.90,2,,,,,,,,,,,,,
-g15,chi2-contingency,a-priori,0.25,0.05,0.90,2,,,3 arms x 2,,,,,,,,,,
-g16,chi2-contingency,a-priori,0.1,0.01,0.95,6,,,4x3 table,,,,,,,,,,
-g17,chi2-contingency,a-priori,0.3,0.05,0.999,1,,,power near 1,,,,,,,,,,
-g18,chi2-contingency,a-priori,0.3,0.05,0.95,100,,,large df,,,,,,,,,,
-g19,chi2-contingency,a-priori,0,0.05,0.95,5,,,w = 0 (invalid),,,,,,,,,,
-g20,chi2-contingency,a-priori,0.3,0.05,0.95,0,,,df = 0 (invalid),,,,,,,,,,
-g21,chi2-contingency,post-hoc,0.3,0.05,,5,100,,manual example,,,,,,,,,,
-g22,chi2-contingency,post-hoc,0.2,0.05,,1,120,,,,,,,,,,,,
-g23,chi2-contingency,post-hoc,0.3,0.05,,2,200,,,,,,,,,,,,
-g24,chi2-contingency,post-hoc,0.3,0.05,,1,2,,minimum N,,,,,,,,,,
-g25,chi2-contingency,post-hoc,0.3,0.05,,1,1,,N = 1 (invalid?),,,,,,,,,,
-g26,chi2-contingency,post-hoc,0.05,0.05,,1,10,,power near alpha,,,,,,,,,,
-g27,chi2-contingency,compromise,0.3,,,5,100,1,manual example,,,,,,,,,,
-g28,chi2-contingency,compromise,0.3,,,5,100,4,q = 4,,,,,,,,,,
-g29,chi2-contingency,criterion,0.3,,0.95,5,100,,manual example,,,,,,,,,,
-g30,chi2-contingency,sensitivity,,0.05,0.95,5,100,,manual example,,,,,,,,,,
-g31,chi2-contingency,sensitivity,,0.05,0.80,1,50,,,,,,,,,,,,
+id,test,mode,w,alpha,power,df,n_total,beta_alpha_ratio,note,exp_n_total,exp_ncp,exp_critical_chi2,exp_actual_power,exp_power,exp_alpha,exp_beta,exp_w,exp_code,exp_error_text,screenshot
+g01,chi2-contingency,a-priori,0.3,0.05,0.95,5,,,manual example,220,19.8000000,11.0704977,0.9502155,,,,,,,screenshots/g01.png
+g02,chi2-contingency,a-priori,0.3,0.05,0.80,1,,,2x2 classic,88,7.9200000,3.8414588,0.8035275,,,,,,,screenshots/g02.png
+g03,chi2-contingency,a-priori,0.1,0.05,0.80,1,,,small w,785,7.8500000,3.8414588,0.8000569,,,,,,,screenshots/g03.png
+g04,chi2-contingency,a-priori,0.5,0.05,0.80,1,,,large w,32,8.0000000,3.8414588,0.8074304,,,,,,,screenshots/g04.png
+g05,chi2-contingency,a-priori,0.01,0.05,0.95,1,,,very small w,129948,12.9948000,3.8414588,0.9500013,,,,,,,screenshots/g05.png
+g06,chi2-contingency,a-priori,0.001,0.05,0.80,1,,,extreme small w (search limit?),7848861,7.8488610,3.8414588,0.8000000,,,,,,,screenshots/g06.png
+g07,chi2-contingency,a-priori,2,0.05,0.80,1,,,very large w (minimum N?),2,8.0000000,3.8414588,0.8074304,,,,,,,screenshots/g07.png
+g08,chi2-contingency,a-priori,5,0.05,0.95,1,,,huge w (minimum N?),1,25.0000000,3.8414588,0.9988173,,,,,,,screenshots/g08.png
+g09,chi2-contingency,a-priori,0.3,0.05,0.05,5,,,power == alpha,1,0.0900000,11.0704977,0.0539009,,,,,,,screenshots/g09.png
+g10,chi2-contingency,a-priori,0.3,0.05,0.04,5,,,power < alpha,,,,,,,,,,Power must be greater than or equal to alpha.,screenshots/g10.png
+g11,chi2-contingency,a-priori,0.3,0.05,0.0501,5,,,power just above alpha,1,0.0900000,11.0704977,0.0539009,,,,,,,screenshots/g11.png
+g12,chi2-contingency,a-priori,0.3,0.01,0.99,10,,,strict,445,40.0500000,23.2092512,0.9900571,,,,,,,screenshots/g12.png
+g13,chi2-contingency,a-priori,0.3,0.001,0.9,3,,,tiny alpha,289,26.0100000,16.2662362,0.9012598,,,,,,,screenshots/g13.png
+g14,chi2-contingency,a-priori,0.2,0.10,0.90,2,,,,262,10.4800000,4.6051702,0.9005778,,,,,,,screenshots/g14.png
+g15,chi2-contingency,a-priori,0.25,0.05,0.90,2,,,3 arms x 2,203,12.6875000,5.9914645,0.9008030,,,,,,,screenshots/g15.png
+g16,chi2-contingency,a-priori,0.1,0.01,0.95,6,,,4x3 table,2705,27.0500000,16.8118938,0.9500639,,,,,,,screenshots/g16.png
+g17,chi2-contingency,a-priori,0.3,0.05,0.999,1,,,power near 1,284,25.5600000,3.8414588,0.9990183,,,,,,,screenshots/g17.png
+g18,chi2-contingency,a-priori,0.3,0.05,0.95,100,,,large df,632,56.8800000,124.3421,0.9501569,,,,,,,screenshots/g18.png
+g19,chi2-contingency,a-priori,0,0.05,0.95,5,,,w = 0 (invalid),,,,,,,,,,Effect size w must be greater 1e-06.,screenshots/g19.png
+g20,chi2-contingency,a-priori,0.3,0.05,0.95,0,,,df = 0 (invalid),,,,,,,,,,Degrees of Freedom must be greater or equal one.,screenshots/g20.png
+g21,chi2-contingency,post-hoc,0.3,0.05,,5,100,,manual example,,9.0000000,11.0704977,,0.6235846,,,,,,screenshots/g21.png
+g22,chi2-contingency,post-hoc,0.2,0.05,,1,120,,,,4.8000000,3.8414588,,0.5913305,,,,,,screenshots/g22.png
+g23,chi2-contingency,post-hoc,0.3,0.05,,2,200,,,,18.0000000,5.9914645,,0.9744634,,,,,,screenshots/g23.png
+g24,chi2-contingency,post-hoc,0.3,0.05,,1,2,,minimum N,,0.1800000,3.8414588,,0.0708635,,,,,,screenshots/g24.png
+g25,chi2-contingency,post-hoc,0.3,0.05,,1,1,,N = 1 (invalid?),,0.0900000,3.8414588,,0.0603726,,,,,,screenshots/g25.png
+g26,chi2-contingency,post-hoc,0.05,0.05,,1,10,,power near alpha,,0.0250000,3.8414588,,0.0528687,,,,,,screenshots/g26.png
+g27,chi2-contingency,compromise,0.3,,,5,100,1,manual example,,9.0000000,7.6804954,,0.8252545,0.1747455,0.1747455,,,,screenshots/g27.png
+g28,chi2-contingency,compromise,0.3,,,5,100,4,q = 4,,9.0000000,9.9516505,,0.6935326,0.0766169,0.3064674,,,,screenshots/g28.png
+g29,chi2-contingency,criterion,0.3,,0.95,5,100,,manual example,,9.0000000,4.6618452,,,0.4585253,,,,,screenshots/g29.png
+g30,chi2-contingency,sensitivity,,0.05,0.95,5,100,,manual example,,19.7801344,11.0704977,,,,,0.4447486,,,screenshots/g30.png
+g31,chi2-contingency,sensitivity,,0.05,0.80,1,50,,,,7.8488605,3.8414588,,,,,0.3962035,,,screenshots/g31.png
+g32,chi2-contingency,post-hoc,0.000001,0.05,,1,100,,w exactly 1e-6,,1e-10,3.8414588,,0.0500000,,,,,,screenshots/g32.png
+g33,chi2-contingency,post-hoc,0.0000011,0.05,,1,100,,w just above 1e-6,,1.21e-10,3.8414588,,0.0500000,,,,,,screenshots/g33.png
+g34,chi2-contingency,a-priori,0.5,0.05,0.051,1,,,N=1 reachable?,1,0.2500000,3.8414588,0.0790975,,,,,,,screenshots/g34.png
