@@ -80,9 +80,10 @@ python -I tests/differential.py
 - `rea/FINDINGS.md` — ayrı inceleme oturumunun 22 [REA] bulgusu (fonksiyon/dize adresi + ≤ 2 satır alıntı);
   LEDGER.md'ye aktarıldı. 10 tanesi ayrıca yeni GUI vektörleriyle (g35–g44) arayüzde doğrulandı.
 - `rea/SESSION_LOG.md` — inceleme oturumunun komutları ve maliyeti.
-- **Araç notu:** Ghidra 12.2 JDK 25 istiyor; diskte JDK 21 vardı, bu yüzden statik analiz GNU objdump
-  disassembly'si ve küçük okuyucu betiklerle yapıldı. Verilen adresler sanal adreslerdir, Ghidra'nın
-  göstereceği adreslerle aynıdır. Disassembly dökümü repoya konmadı.
+- **Araçlar:** İlk analiz GNU objdump disassembly'si ve küçük okuyucu betiklerle yapıldı (Ghidra 12.2 JDK 25
+  istiyordu). JDK 25 kurulduktan sonra **Ghidra 12.2 headless** otomatik analizi çalıştırıldı ve bir post-script
+  ile 9 anahtar fonksiyon girişinin ve 5 hata dizesi referansının tamamı doğrulandı: `rea/ghidra_check.txt`.
+  Disassembly/decompile dökümü repoya konmadı.
 - `oracle/collect_gui.py` — vektörleri toplayan betik: açık G*Power penceresini Win32 mesajlarıyla sürer
   (fare yok), çıktıları ekranda gösterildiği gibi okur, pencereyi PrintWindow ile yakalar.
 - `oracle/statsmodels_vectors.csv` — ölçek için 799 vektör.

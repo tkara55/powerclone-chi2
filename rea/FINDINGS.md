@@ -48,6 +48,37 @@ sabitleridir. Alıntılar disassembly'dir (≤ 2 satır).
 | R-21 | [REA] | Bilinçli bir "üst sınır N" yok. A-priori sonucu N, girdi aralığı [1, 2147483646] ile karşılaştırılmıyor. Pratikte tavan, ×1.6 büyütmenin sonlu bir değerde f ≥ 0 bulmasıdır. LEDGER L-14'teki "10⁷ tavanı" G*Power davranışı **değil**, bizim kararımız | R-12'deki sayaçsız döngü (`496340`…`496375`). `FUN_00496aa0` içinde N için `0x488a10` çağrısı yok | Orta (sayaç yok kesin; çok büyük N'de sayısal davranış test edilmedi) | g06 |
 | R-22 | [REA] | Garip daraltma formülü: f(100) ≥ 0 iken yeni orta nokta `(m + lo)·0.5 − lo` (ortalama değil, ayrıca −lo). lo=1 için 50.5 → 24.75 → 11.875 → 5.4375 → 2.21875 → 0.61 (<1 → dur, 1'e sıkıştır). Sonucu etkilemiyor (Brent kökü yine bulur) ama aralık asimetrik | `FUN_004962d0`: `4963ec: addsd xmm0,xmm1` / `4963f8: subsd xmm0,xmm1` (xmm1 = lo, `4963c9`'da yeniden yüklenmiş) | Orta | g02, g04 (N<100 yolları) |
 
+## Ghidra 12.2 doğrulaması
+
+Ghidra 12.2 PUBLIC headless (JDK Temurin 25.0.4.1) ile otomatik analiz yapıldı (164 s, 9115 fonksiyon,
+dil `x86:LE:32:default`). Ardından repo dışındaki `CheckGPower.java` post-script'i çalıştırıldı. Script yalnızca
+adres ve ad yazdırıyor, decompile çıktısı yok. Log alıntısı: [ghidra_check.txt](ghidra_check.txt).
+
+| Adres | Ghidra fonksiyon adı | Giriş noktası eşleşiyor mu | İlgili bulgular |
+|---|---|---|---|
+| `0x00498ad0` | `FUN_00498ad0` | evet | dağıtıcı, R-10 |
+| `0x00487880` | `FUN_00487880` | evet | R-01, R-02 |
+| `0x00487970` | `FUN_00487970` | evet | R-03 |
+| `0x004880e0` | `FUN_004880e0` | evet | R-05 |
+| `0x00496aa0` | `FUN_00496aa0` | evet | R-11, R-13, R-15 |
+| `0x004962d0` | `FUN_004962d0` | evet | R-12, R-19, R-22 |
+| `0x00496a20` | `FUN_00496a20` | evet | R-14 |
+| `0x004f9bb0` | `FUN_004f9bb0` | evet | R-11, R-13, R-16 |
+| `0x00496570` | `FUN_00496570` | evet | R-17 |
+
+| Dize | Ghidra'nın bulduğu referanslar (adres → fonksiyon) | objdump bulgusuyla eşleşiyor mu |
+|---|---|---|
+| `0x5c6220` "Power must be greater than or equal to alpha." | `004880f9` → `FUN_004880e0` | evet (R-05) |
+| `0x5c615c` "Degrees of Freedom must be greater or equal one." | `0048781b` → `FUN_00487800` | evet (R-04) |
+| `0x5c61b4` "Effect size " | `004878cc` → `FUN_00487880`, `004879b3` → `FUN_00487970`, `00487aa0` → `FUN_00487a40`, `00487bcf` → `FUN_00487b70` | evet. İlk ikisi R-01/R-03. Son ikisi başka testlerin etki büyüklüğü kontrolleri, χ² contingency'den çağrılmıyor |
+| `0x5c6128` " must be non-negative." | `004879ce` → `FUN_00487970`, `00487e5e` → `FUN_00487e00` | evet (R-03). `FUN_00487e00` noncentrality kontrolü, kapsam dışı |
+| `0x5c6100` "Alpha is outside the admissible range (" | `004874ec` → `FUN_00487460`, `004875b4` → `FUN_00487530` | evet (R-06). `FUN_00487460` vtable+0x108'deki genel α kontrolü, contingency dağıtıcısı `FUN_00487530`'u çağırıyor |
+
+Sonuç: objdump ile bulunan 9 fonksiyon girişinin tamamı ve 5 dizenin tüm referansları Ghidra'nın
+analiziyle **birebir** örtüşüyor. Ghidra'nın bulduğu ek referanslar (`FUN_00487a40`, `FUN_00487b70`,
+`FUN_00487e00`, `FUN_00487460`) objdump çıktısında da vardı. Bu oturumda contingency yoluna bağlı
+olmadıkları için bulgu olarak yazılmamışlardı.
+
 ## Bağlanamayan / [AJAN] kalanlar
 
 | ID | Etiket | İddia | Not |

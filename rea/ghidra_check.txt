@@ -1,0 +1,29 @@
+# Ghidra 12.2 PUBLIC headless, JDK Temurin 25.0.4.1, GPowerNT.exe SHA-256 C63E6A13...EFC812
+# Excerpt of analyzeHeadless log (lines 293-319 of 319); no decompiled code
+     Total Time   164 secs
+-----------------------------------------------------
+ (AutoAnalysisManager)
+INFO  REPORT: Analysis succeeded for file: <tools>/GPowerNT.exe (HeadlessAnalyzer)
+INFO  REPORT: Execute script: CheckGPower.java  (HeadlessAnalyzer)
+INFO  SCRIPT: <scripts>/CheckGPower.java (HeadlessAnalyzer)
+INFO  CheckGPower.java> CHECK program=GPowerNT.exe lang=x86:LE:32:default funcs=9115 (GhidraScript)
+INFO  CheckGPower.java> CHECK FUNC 00498ad0 at=FUN_00498ad0 entry_match=true (GhidraScript)
+INFO  CheckGPower.java> CHECK FUNC 00487880 at=FUN_00487880 entry_match=true (GhidraScript)
+INFO  CheckGPower.java> CHECK FUNC 00487970 at=FUN_00487970 entry_match=true (GhidraScript)
+INFO  CheckGPower.java> CHECK FUNC 004880e0 at=FUN_004880e0 entry_match=true (GhidraScript)
+INFO  CheckGPower.java> CHECK FUNC 00496aa0 at=FUN_00496aa0 entry_match=true (GhidraScript)
+INFO  CheckGPower.java> CHECK FUNC 004962d0 at=FUN_004962d0 entry_match=true (GhidraScript)
+INFO  CheckGPower.java> CHECK FUNC 00496a20 at=FUN_00496a20 entry_match=true (GhidraScript)
+INFO  CheckGPower.java> CHECK FUNC 004f9bb0 at=FUN_004f9bb0 entry_match=true (GhidraScript)
+INFO  CheckGPower.java> CHECK FUNC 00496570 at=FUN_00496570 entry_match=true (GhidraScript)
+INFO  CheckGPower.java> CHECK STR 005c6220 "Power must be greater than or equal to alpha." refs: 004880f9(FUN_004880e0) (GhidraScript)
+INFO  CheckGPower.java> CHECK STR 005c615c "Degrees of Freedom must be greater or equal one." refs: 0048781b(FUN_00487800) (GhidraScript)
+INFO  CheckGPower.java> CHECK STR 005c61b4 "Effect size " refs: 004878cc(FUN_00487880) 004879b3(FUN_00487970) 00487aa0(FUN_00487a40) 00487bcf(FUN_00487b70) (GhidraScript)
+INFO  CheckGPower.java> CHECK STR 005c6128 " must be non-negative." refs: 004879ce(FUN_00487970) 00487e5e(FUN_00487e00) (GhidraScript)
+INFO  CheckGPower.java> CHECK STR 005c6100 "Alpha is outside the admissible range (" refs: 004874ec(FUN_00487460) 004875b4(FUN_00487530) (GhidraScript)
+INFO  ANALYZING changes made by post scripts: <tools>/GPowerNT.exe (HeadlessAnalyzer)
+INFO  REPORT: Post-analysis succeeded for file: <tools>/GPowerNT.exe (HeadlessAnalyzer)
+INFO  /GPowerNT.exe: file created (User) (LocalFileSystem)
+INFO  REPORT: Save succeeded for: /GPowerNT.exe (GPower:/GPowerNT.exe) (HeadlessAnalyzer)
+INFO  REPORT: Import succeeded (HeadlessAnalyzer)
+elapsed: 00:03:26.0240913

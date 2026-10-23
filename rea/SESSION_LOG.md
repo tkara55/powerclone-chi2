@@ -31,6 +31,24 @@
 5. Compromise / criterion / sensitivity çözücüleri ve Brent'in durma koşulu okundu. tol argümanının kullanılmadığı görüldü.
 6. GUI vektörleriyle çapraz kontrol: g32/g33 post-hoc olduğu için a-priori 1e-6 sınırını sınamadığı fark edildi.
 
+## Ek tur: Ghidra doğrulaması + SPEC.md (2026-10-23, ≈ 20:40–21:05)
+
+Yazım oturumunun isteği üzerine. Yaklaşık ~25 araç çağrısı, ~120k token.
+
+1. JDK 25 (Temurin 25.0.4.1) `…\yzm301-tools\jdk25\jdk-25.0.4.1+1` altına indirildi (yazım oturumu indirdi).
+2. Deneme 1: `JAVA_HOME=<jdk25>`, `analyzeHeadless.bat <tools>\ghidra_proj GPower -import GPowerNT.exe -overwrite -scriptPath <tools>\scripts -postScript CheckGPower.java`
+   → **başarısız**, 3 s: "Bundle org.apache.felix.framework [0] The data file must be inside the data dir." (OSGi script ortamı).
+3. Deneme 2: `JAVA_TOOL_OPTIONS=-Dapplication.settingsdir=<tools>\gsettings -Djava.io.tmpdir=<tools>\gtmp` → aynı hata.
+   Log, nedeni gösteriyor: Claude masaüstü uygulaması paketli (MSIX) olduğu için alt süreçler `AppData\Local` yolunu
+   `AppData\Local\Packages\Claude_…\LocalCache\Local\…` altına yönlendirilmiş görüyor. Felix'in kanonik yolu veri dizinine uymuyor.
+4. Deneme 3 (**başarılı**, 3 dk 26 s): ayarlar, geçici dizin ve proje AppData dışında `C:\Users\User\yzm301-ghidra\{settings,tmp,proj}`
+   (repo dışında). Komut: `analyzeHeadless.bat C:\Users\User\yzm301-ghidra\proj GPower -import …\GPowerNT.exe -overwrite -analysisTimeoutPerFile 3600 -scriptPath <tools>\scripts -postScript CheckGPower.java`.
+   Analiz 164 s, 9115 fonksiyon. Post-script çıktısı `rea/ghidra_check.txt`'te. 9/9 fonksiyon girişi ve 5/5 dize referansı eşleşti.
+5. Not: aynı yönlendirme yüzünden `…\yzm301-tools\out\` altındaki loglar, paketli olmayan süreçlere boş ya da eksik görünebilir.
+   Kanıt olarak repodaki `rea/ghidra_check.txt` esas alınmalı.
+6. `SPEC.md` baştan yazıldı (Türkçe; model, beş mod için çözücüler, doğrulama sırası, CONTRACT farkları D-1/D-2, Gherkin).
+   SPEC.md'de adres, disassembly ya da decompile çıktısı yok, yalnızca R-xx / L-xx / gNN kimlikleri var (`grep '0x|FUN_|DAT_'` → boş).
+
 ## Kurallara uyum
 
 - Binary repoya kopyalanmadı. Ghidra projesi ve disassembly repo dışında.
