@@ -1,8 +1,31 @@
-# powerclone-chi2 — χ² olumsallık tablosu güç analizi (YZM301 Teardown Sprint)
+﻿# powerclone-chi2 — χ² olumsallık tablosu güç analizi (YZM301 Teardown Sprint)
 
-**Yapılan katmanlar:** ✅ Temel (CLI) · ✅ MCP sunucusu · ✅ AI ajanı (kod hazır; değerlendirme `ANTHROPIC_API_KEY` ile çalıştırılmalı)
+**Yapılan katmanlar:**
+
+| Katman | Durum |
+|---|---|
+| Temel (CLI) | ✅ Tamam: 5 modun hepsi; G*Power GUI'ye karşı 42/44 (2 fark sözleşmeden), statsmodels'e karşı 799/799 |
+| MCP sunucusu (+15) | ✅ Tamam: tek araç `power_analysis`, aynı motoru çağırır; CLI = MCP eşdeğerlik testi geçiyor |
+| AI ajanı (+10) | ⚠️ **Kısmi:** ajan kodu, 10 soruluk set ve değerlendirme betiği hazır; **değerlendirme çalıştırılmadı** (API anahtarı yoktu), MCP–GUI token karşılaştırması yapılmadı. Bu katman için puan beklemiyoruz |
 
 **Test ailesi:** 4) χ² testi, olumsallık tablosu (yanıt oranları) — `chi2-contingency`, 5 modun hepsi.
+
+## Süreç notları ve yönergeden sapmalar
+
+Dürüstlük için, yönergeden ayrıldığımız yerler:
+
+1. **Temiz oda sırası ters.** Yönerge önce inceleme (Oturum 1 → SPEC.md), sonra yalnızca SPEC.md ile yazım
+   (Oturum 2) istiyor. Bizde ilk motor, inceleme yapılmadan **yayımlanmış formüllerden** (Cohen 1988, G*Power
+   makalesi) yazıldı; sonra G*Power GUI vektörleri ve ayrı inceleme oturumunun bulguları ile düzeltildi.
+   Yazım oturumu hiçbir zaman decompile/disassembly çıktısı görmedi, yalnızca bulgu düzeyindeki kuralları
+   (sınırlar, sıralar) kullandı. SPEC.md'nin son halini inceleme oturumu yazdı. Yalnızca SPEC.md'yi gören yeni
+   bir oturumla sıfırdan yeniden yazım hazırlandı (`cleanroom` dalı, `prompts/session2_yazim.md`) ama
+   çalıştırılamadı.
+2. **REA aracı (`rea-agents`) kurulamadı.** Paket resmi kaynaktan doğrulandı (github.com/morluto/rea, npm 6.7.0),
+   ancak kullandığımız ajan ortamının güvenlik denetimi kurulumu engelledi. Bu yüzden "REA araçları kullanılabilir
+   mi?" ekran görüntüsü yok. [REA] etiketli bulgular, REA olmadan Ghidra 12.2 ve objdump ile **binary'den,
+   adresleriyle** çıkarıldı (rea/).
+3. **AI ajanı değerlendirmesi** yukarıdaki tabloda açıklandığı gibi çalıştırılmadı.
 
 > Bu araç G*Power **değildir** ve onun yerine sunulmaz. G*Power'ın davranışını referans alan,
 > yayımlanmış yöntemlerden bağımsız olarak yazılmış bir eğitim çalışmasıdır.
@@ -23,7 +46,7 @@ Tests for correlation and regression analyses. *Behavior Research Methods, 41*, 
 | GPowerWin_3.1.9.7.zip SHA-256 | `3BB7F1F2478D74EE5BA701AE7F849373CF2B8A11F6B6216C7C6B236DB7861199` |
 | Sözleşme | CONTRACT.md 1.0.0 |
 | Motor | Python ≥ 3.10, SciPy |
-| Demo videosu | [demo/demo.mp4](demo/demo.mp4) (52 sn; `demo/demo.ps1` komutları canlı çalıştırır, ffmpeg ile kaydedildi) |
+| Demo videosu | [demo/demo.mp4](demo/demo.mp4) (56 sn; `demo/demo.ps1` komutları canlı çalıştırır, ffmpeg ile kaydedildi) |
 
 ## Kurulum ve çalıştırma
 
@@ -71,9 +94,13 @@ python -I tests/differential.py
 
 ## Kâhin (oracle/)
 
-- `oracle/gpower_gui_vectors.csv` — G*Power 3.1.9.7 arayüzünden toplanmış 34 vektör (sınır değerler ve
+- `oracle/gpower_gui_vectors.csv` — G*Power 3.1.9.7 arayüzünden toplanmış 44 vektör (sınır değerler ve
   hata mesajları dahil); her satırın ekran görüntüsü `oracle/screenshots/<id>.png`. Uyum: **42/44**;
   iki fark da sözleşme aralığından kaynaklı (LEDGER L-17, L-18), açıklanamayan uyuşmazlık **0**.
+- `oracle/collect_gui.py` — vektörleri toplayan betik: açık G*Power penceresini Win32 mesajlarıyla sürer
+  (fare yok), çıktıları ekranda gösterildiği gibi okur, pencereyi PrintWindow ile yakalar.
+- `oracle/statsmodels_vectors.csv` — ölçek için 799 vektör. statsmodels kesirli N verir (ör. 219.4);
+  G*Power gücü hedefe ulaştıran en küçük tam sayıyı verir (yukarı yuvarlama, LEDGER R-14).
 
 ## Tersine mühendislik (rea/)
 
@@ -84,9 +111,6 @@ python -I tests/differential.py
   istiyordu). JDK 25 kurulduktan sonra **Ghidra 12.2 headless** otomatik analizi çalıştırıldı ve bir post-script
   ile 9 anahtar fonksiyon girişinin ve 5 hata dizesi referansının tamamı doğrulandı: `rea/ghidra_check.txt`.
   Disassembly/decompile dökümü repoya konmadı.
-- `oracle/collect_gui.py` — vektörleri toplayan betik: açık G*Power penceresini Win32 mesajlarıyla sürer
-  (fare yok), çıktıları ekranda gösterildiği gibi okur, pencereyi PrintWindow ile yakalar.
-- `oracle/statsmodels_vectors.csv` — ölçek için 799 vektör.
 
 ## MCP sunucusu
 
@@ -106,12 +130,12 @@ Claude Desktop / Claude Code yapılandırması:
 |---|---|---|---|
 | `test` | string | evet | `"chi2-contingency"` |
 | `mode` | string | evet | `a-priori`, `post-hoc`, `compromise`, `criterion`, `sensitivity` |
-| `w` | number | moda göre | etki büyüklüğü (> 0) |
-| `alpha` | number | moda göre | 0 < α < 1 |
-| `power` | number | moda göre | 0 < güç < 1 |
+| `w` | number | moda göre | etki büyüklüğü, > 0 (a-priori'de ≥ 1e-6) |
+| `alpha` | number | moda göre | 1e-7 ≤ α ≤ 0.9999999 |
+| `power` | number | moda göre | 1e-7 ≤ güç ≤ 0.9999999, güç ≥ α |
 | `df` | integer | evet | ≥ 1, (satır−1)(sütun−1) |
 | `n_total` | integer | moda göre | ≥ 2 |
-| `beta_alpha_ratio` | number | compromise | > 0 |
+| `beta_alpha_ratio` | number | compromise | 0.01 ≤ q ≤ 100 |
 
 Çıktı: CLI stdout'u ile aynı tek satırlık JSON (metin içeriği). Hata: `{"error","code","field"}`.
 
@@ -127,12 +151,15 @@ python -I agent_eval/run_eval.py
 
 - Model: `claude-sonnet-5-5` (`POWERCLONE_MODEL` ile değiştirilebilir). Jev kullanılmadı; aile seçimi
   sistem prompt'uyla `chi2-contingency` / desteklenmeyen / belirsiz ile sınırlı bir LLM'e yaptırıldı.
-- 10 soruluk set: `agent_eval/questions.jsonl` · sonuç: `agent_eval/RESULTS.md` · log: `logs/agent_calls.jsonl`.
+- 10 soruluk set: `agent_eval/questions.jsonl`. Değerlendirme çalıştırıldığında sonuç `agent_eval/RESULTS.md`,
+  log `logs/agent_calls.jsonl` dosyasına yazılır. **Henüz çalıştırılmadı** (bkz. Süreç notları).
 - Yalnızca kurgusal araştırma senaryoları kullanılır.
 
 ## Kurulum kontrolü
 
-`<doldurulacak: "REA araçları ve Ghidra sağlayıcısı bu oturumda kullanılabilir mi?" yanıtının ekran görüntüsü>`
+REA kurulamadığı için "REA araçları ve Ghidra sağlayıcısı bu oturumda kullanılabilir mi?" ekran görüntüsü
+yok (bkz. Süreç notları, madde 2). Kullanılan araçlar: Ghidra 12.2 PUBLIC (JDK Temurin 25.0.4.1) headless,
+GNU objdump 2.47; çalışmanın kaydı `rea/ghidra_check.txt` ve `rea/SESSION_LOG.md`.
 
 ## Teslim dosyaları
 

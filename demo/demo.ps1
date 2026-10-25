@@ -23,7 +23,7 @@ function Step($comment, $argsLine) {
 
 Clear-Host
 Write-Host "powerclone-chi2  |  YZM301 Teardown Sprint  |  chi2 contingency power analysis" -ForegroundColor White
-Write-Host "Clean-room rewrite; reference: G*Power 3.1.9.7 (Faul, Erdfelder, Lang & Buchner)" -ForegroundColor DarkGray
+Write-Host "Independent rewrite; reference: G*Power 3.1.9.7 (Faul, Erdfelder, Lang & Buchner)" -ForegroundColor DarkGray
 Start-Sleep -Seconds 3
 
 Step "Version / contract" "--version"
